@@ -2,6 +2,7 @@
 {
     public class MongoSettings
     {
-        public string MongoUrl { get; set; }
+        public string ConnectionString { get; set; }
+        public string DatabaseName { get; set; }
     }
 }

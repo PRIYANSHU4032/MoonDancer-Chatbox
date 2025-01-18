@@ -1,0 +1,6 @@
+@Moon_HostAddress = http://localhost:5202
+
+GET {{Moon_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

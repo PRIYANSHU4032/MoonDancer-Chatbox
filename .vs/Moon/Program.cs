@@ -1,6 +1,9 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Configuration;
+using Moon.IMongo;
 using Moon.Models;
+using Moon.MongoOP;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +13,18 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("MongoUrl"));
+builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("MongoDB"));
 builder.Services.AddSingleton<IMongoClient>(serviceProvider =>
 {
     var mongoSettings = serviceProvider.GetRequiredService<IOptions<MongoSettings>>().Value;
-    return new MongoClient(mongoSettings.MongoUrl);
+    return new MongoClient(mongoSettings.ConnectionString);
+});
+
+builder.Services.AddSingleton<IMongoDBManager>(serviceProvider =>
+{
+    var mongoClient = serviceProvider.GetRequiredService<IMongoClient>();
+    var settings = serviceProvider.GetRequiredService<IOptions<MongoSettings>>().Value;
+    return new MongoDBManger(mongoClient, settings.DatabaseName);
 });
 
 var app = builder.Build();

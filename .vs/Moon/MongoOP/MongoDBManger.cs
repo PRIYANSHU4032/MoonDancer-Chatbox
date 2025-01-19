@@ -27,7 +27,7 @@ namespace Moon.MongoOP
         public T GetDocument<T>(Guid id) where T : class
         {
             var collection = _database.GetCollection<T>(typeof(T).Name);
-            var filter = Builders<T>.Filter.Eq("Id", id);
+            var filter = Builders<T>.Filter.Eq("_id", id);
             return collection.Find(filter).FirstOrDefault();
         }
 

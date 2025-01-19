@@ -14,6 +14,10 @@ namespace Moon.MongoOP
             _database = mongoClient.GetDatabase(databaseName);
         }
 
+        public MongoDBManger()
+        {
+        }
+
         public List<T> getAllDocuments<T>() where T : class
         {
             var collection = _database.GetCollection<T>(typeof(T).Name);
@@ -41,7 +45,7 @@ namespace Moon.MongoOP
         {
             if (docs == null)
             {
-                throw new ArgumentException("The document list is empty or null.", nameof(docs));
+                throw new ArgumentException("The document is empty or null.", nameof(docs));
             }
             var collection = _database.GetCollection<T>(typeof(T).Name);
             collection.InsertOne(docs);

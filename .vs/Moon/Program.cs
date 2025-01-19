@@ -1,9 +1,12 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Configuration;
+using Moon.DTOs;
 using Moon.IMongo;
 using Moon.Models;
 using Moon.MongoOP;
+using Moon.Moon_BLL;
+using Moon.User_Op;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,8 @@ builder.Services.AddSingleton<IMongoDBManager>(serviceProvider =>
     var settings = serviceProvider.GetRequiredService<IOptions<MongoSettings>>().Value;
     return new MongoDBManger(mongoClient, settings.DatabaseName);
 });
+builder.Services.AddScoped<Genral_Oprations<User>>();
+builder.Services.AddScoped<UserGenralManger>();
 
 var app = builder.Build();
 
